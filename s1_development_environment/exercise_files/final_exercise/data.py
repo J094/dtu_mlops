@@ -35,24 +35,33 @@ def mnist():
     train = {"images": None, "target": None}
     test = {"images": None, "target": None}
     for filename in os.listdir(data_path):
+        print(filename)
         if filename.startswith("train_images"):
             train_images_tmp = torch.load(os.path.join(data_path, filename))
             train_images_tmp = train_images_tmp.view(train_images_tmp.shape[0], -1)
             if train["images"] is None:
                 train["images"] = train_images_tmp
+            else:
+                train["images"] = torch.cat((train["images"], train_images_tmp), dim=0)
         if filename.startswith("train_target"):
             train_target_tmp = torch.load(os.path.join(data_path, filename))
             if train["target"] is None:
                 train["target"] = train_target_tmp
+            else:
+                train["target"] = torch.cat((train["target"], train_target_tmp), dim=0)
         if filename.startswith("test_images"):
             test_images_tmp = torch.load(os.path.join(data_path, filename))
             test_images_tmp = test_images_tmp.view(test_images_tmp.shape[0], -1)
             if test["images"] is None:
                 test["images"] = test_images_tmp
+            else:
+                test["images"] = torch.cat((test["images"], test_images_tmp), dim=0)
         if filename.startswith("test_target"):
             test_target_tmp = torch.load(os.path.join(data_path, filename))
             if test["target"] is None:
                 test["target"] = test_target_tmp
+            else:
+                test["target"] = torch.cat((test["target"], test_target_tmp), dim=0)
     print(train["images"].shape)
     print(train["target"].shape)
     print(test["images"].shape)
