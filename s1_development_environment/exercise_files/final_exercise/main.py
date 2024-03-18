@@ -1,8 +1,8 @@
 import click
 import torch
-from torch import nn, optim
-from model import MyAwesomeModel
+import matplotlib.pyplot as plt
 
+from model import MyAwesomeModel
 from data import mnist
 
 
@@ -25,6 +25,7 @@ def train(lr):
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     criterion = torch.nn.CrossEntropyLoss()
 
+    train_loss_record = []
     for epoch in range(10):
         train_loss = 0
         for images, labels in trainloader:
@@ -35,7 +36,14 @@ def train(lr):
             optimizer.step()
             train_loss += loss.item()
         print(f"Epoch {epoch} - Training loss: {train_loss/len(trainloader)}")
+        train_loss_record.append(train_loss/len(trainloader))
     torch.save(model, "s1_model.pt")
+    plt.plot(train_loss_record)
+    plt.xlabel('epoch')
+    plt.ylabel('loss')
+    plt.title('train process')
+    plt.grid(True)
+    plt.show()
 
 
 @click.command()
