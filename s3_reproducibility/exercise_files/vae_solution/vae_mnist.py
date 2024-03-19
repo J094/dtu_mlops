@@ -92,7 +92,7 @@ def train(config):
             x = x.to(device)
             x_hat, _, _ = model(x)
             break
-
+    # torchvision 自带的将 tensor 保存成图像的工具函数
     save_image(x.view(hparams["batch_size"], 1, 28, 28), "orig_data.png")
     save_image(x_hat.view(hparams["batch_size"], 1, 28, 28), "reconstructions.png")
 
